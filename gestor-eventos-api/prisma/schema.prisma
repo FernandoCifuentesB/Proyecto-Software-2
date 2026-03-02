@@ -1,0 +1,8 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}git checkout -b PRO2-27-esquema-principal-front-back
