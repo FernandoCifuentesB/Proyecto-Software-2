@@ -1,0 +1,43 @@
+services:
+  db:
+    image: postgres:16
+    container_name: gestor_eventos_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: gestor_eventos
+    ports:
+      - "5432:5432"
+    volumes:
+      - gestor_eventos_pgdata:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: ./gestor-eventos-api
+      dockerfile: Dockerfile
+    container_name: gestor_eventos_api
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/gestor_eventos?schema=public
+      PORT: 3001
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db
+
+  web:
+    build:
+      context: ./gestor-eventos-web
+      dockerfile: Dockerfile
+    container_name: gestor_eventos_web
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:3001
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+
+volumes:
+  gestor_eventos_pgdata:
