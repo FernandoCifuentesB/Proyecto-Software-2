@@ -5,7 +5,7 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
-}git checkout -b PRO2-27-esquema-principal-front-back
+}
 
 model Event {
   id          Int      @id @default(autoincrement())
@@ -18,7 +18,19 @@ model Event {
   updated_at  DateTime @updatedAt
 
   category_id Int
-  category    Category @relation(fields: [category_id], references: [id])
+  category    Category @relation(fields: [category_id], references: [id_category])
 
   @@map("events")
+}
+
+model Category {
+  id_category          Int      @id @default(autoincrement())
+  name_category        String
+  description_category String
+  created_at           DateTime @default(now())
+  updated_at           DateTime @updatedAt
+
+  events               Event[]
+
+  @@map("categories")
 }
