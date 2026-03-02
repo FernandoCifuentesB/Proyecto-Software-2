@@ -6,3 +6,19 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }git checkout -b PRO2-27-esquema-principal-front-back
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  public_id   String   @unique @default(uuid())
+  name        String
+  description String
+  image_url   String?
+  status      Boolean  @default(true)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  category_id Int
+  category    Category @relation(fields: [category_id], references: [id])
+
+  @@map("events")
+}
